@@ -65,9 +65,10 @@ fn main() {
         }
         println!("got previous fiber stack as a fresh new mmap allocation");
 
-        for i in 0..SIZE {
-            std::ptr::write_volatile(ptr.cast::<u8>().add(i), 1);
-        }
+        // Our fresh mmap allocation should be entirely writable, but this
+        // crashes in asan.
+        std::ptr::write_bytes(ptr.cast::<u8>(), 1, SIZE);
+
         libc::munmap(ptr, SIZE);
     }
 }
