@@ -40,9 +40,10 @@ fn main() {
             .unwrap();
 
             println!("starting fiber");
-            __sanitizer_start_switch_fiber(std::ptr::null_mut(), ptr as usize, SIZE);
+            let mut fake_stack = 0;
+            __sanitizer_start_switch_fiber(&mut fake_stack, ptr as usize, SIZE);
             assert!(f.resume(()).is_ok());
-            __sanitizer_finish_switch_fiber(0, std::ptr::null_mut(), std::ptr::null_mut());
+            __sanitizer_finish_switch_fiber(fake_stack, std::ptr::null_mut(), std::ptr::null_mut());
             println!("fiber exited, destroying fiber");
         }
         println!("releasing fiber stack");
