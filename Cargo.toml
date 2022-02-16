@@ -1,0 +1,11 @@
+[package]
+name = "wasmtiem-fiber-asan-issue"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wasmtime-fiber = "0.34.1"
+libc = "0.2.118"
+
+[profile.release]
+debug = 1
